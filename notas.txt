@@ -1,0 +1,139 @@
+template
+formularios se hace
+todo automatico y se hace del lado del HTML, la lgoica se encuentra del lado del template html
+
+Formularios Reactivos
+Procura q el html sea lo mas basico posible y  q todo el trabajo pesado lo tenga en el componente de Ts
+
+ambos son muy buenos, es mejor con formularos reactivos porque hay mas control al respecto y hay veces q solo queremos manejar un input o algo sencillo y el formulario por templat es genial
+
+
+
+Para tabrajar con angular y template formularios debo importar el
+FormsModule
+ en el templateModule
+
+
+ , se imporrta en el modulo donde nostoors vamos a trabajar, se imprta el FormsModule
+
+////////////////////////////////////////////////////////////
+ Video 235 Forms Module
+
+ Primero se debe improtar el Form Module y como lo avmos a usar solo en el modulo de template lo importamos ahi
+ se improta en el modulo donde lo vamso a trabajar
+
+ Import : FormsModule
+
+
+este modulo le dice a angualr q tome el control del formulario
+entonces angular trabaja este form con nosotros
+
+se debe poner un (ngSubmit) en el form = guardar()
+
+le puedo haceu na referencia local a #miFormulario en la etiqueta form #miFormulario="ngForm"
+ahi lo enlaza para q se guarde en miFormulario q lo mando al metodo .value o mandarlo todo
+y eso me da toda la informacino con los controladores
+pristine:true el formulario no se toco de nignuna manejar
+touched:falsed es q nunca se toco
+value objeto vacio cuando esta vacio
+dirty: false es q no se manipulo
+
+tengo q poner en guardar miFormulario : NgForm para q me aparezca el tipado en Typescript
+
+
+se el debe poner el atributo name="producto" a cada label (en cada input) y con el name se conoce
+el campo
+ en el formulario
+
+.row
+.col
+
+span valid
+
+pre miFormulario. valid
+
+Value
+.
+miFormulario.value | json
+
+Html para q no te de sugerencias:
+autocomplete:"off"
+required para q ese campo si o si tenga valor para q sea valido
+min="0" para q el valor minimo de un numero sea 0
+pero ese es el control pero podes escribirlo -10
+
+
+///////////////////// video 236
+Como mostrar mensajes de error
+
+
+miFormulario.pristine
+miFormulario.touched
+pristine dice q no se han cambiado ninguno del os valores internos, no se han tocado
+desde q se presento al usuario
+
+touched: si el usuario ha tocado el formulario pero si entro a cualquier campo y cambia a true , osea
+aunq no cambio nada si lo toco
+
+como muestor una parte condicional
+
+Podemos hacerlo con un ngIf miFormulario.producto en teoria pero no lo puedo acceder asi directamente
+xq mi formulario no tiene esa propiedad directmaente ,lo tiene como un control
+miFormulario.controls.producto?.invalid q muestre el error
+si le pongo el ? le digo q si existe se evalue &&  miFormulalario.controls.producto?.touched
+span : debe ser de 3 letras
+
+
+//////video  237
+para mejorar el codigo en los campos y q no quede tan FormsModule
+para q cree algun metodo para q value algo y devuelva un true o false
+
+@Input
+con el decorador Input es para recibir
+un componente q viene del padre
+@Output para enviar al padre
+
+@ViewChild
+y necesitamos el nombre de la referencia local miformulario ) miFormulario!:NgForm
+
+para n otener q hacerle enviarlo como parametro en la funcion
+
+creo metodo nombreValido():boolean{
+  return y de todo lo q hagamos this.miFormulario..
+  ngif=nombreValido()?
+}
+
+//////////////////////Video 238
+
+creo carpeta q sel lame "directives"
+dentro
+custom-min.directive.Ts
+le agrego customMin como atributo a un elemento
+[minimo]="0" le agrego para el valor minimo
+@Directive{
+  selector:'[customMin][ngModel]',
+  providers:[{
+    //espara inyectar servicios
+    provide:NG_VALIDATORS,
+    useExisting:CustomMinDirective
+    multi:true
+  }]
+
+
+}
+export class CustomMinDirective implements Validator{
+@Input() minimo!: number;
+constructor(){
+  console.log('Directiva',this.minimo)
+  tengo q incluirlas en el modulo si o si
+
+}
+validate (control:FormControl){
+  const inputvalue = control.value;
+  return (inputValue< this.minimo)
+        ? {'customMin':true}
+        :null;
+  
+}
+}}
+}}

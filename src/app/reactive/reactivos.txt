@@ -1,0 +1,149 @@
+Reactivos Basicos
+toda la logica esta en el componente
+ y en la paret de TS
+
+ lo primero q necesito hacer es importar el modulo
+en reactive Module - ReactiveFormsModule se importa de angular forms
+Declaro el formulario en  el componente
+miFormulario : FormGroup = new FormGroup(){
+  'nombre':new FormControl('Rtx 4080ti');
+})
+// ahi creo un control  y le establezco luego al formulariocon llaves cuadradas
+[formGroup] al formulario ="miFormulario"
+
+para linkearlo con el valor se pone como atributo
+formControlName="nombre" o como lo hayamos definido
+//////////////
+Para crear un formulario con el formBuilder tengo q inyectarlo en el componente
+private fb:formBuilder
+ en el constructor
+
+ para crear formulario de esa forma
+ miFormulario : FormGroup = this.fb.group({
+  nombre:['Rtx4080',validaciones,validaciones asincronas],
+  precio:[0]
+  existencias:[0]
+
+ })
+/////////////
+Validaciones Basicas
+nombre:['valorinicial','validaciones sincronas',validaciones
+asincronos(se consulta x ejemplo en
+la base de datos si existe el nombre de usuario q estan poniendo)]
+Validators.required = esto es para q sea requerido
+[todos los validoradores sincronos q necesito, ]
+Validators.minLength(3)
+Validators.min(0
+Validators.required)
+
+
+//////////////////////////////
+Reactive Mensajes de Error
+
+
+
+crear funcion para evaluar si el campo es valido o no
+
+campoEsValido(campo:string){
+  return toda la validacion
+}
+
+//////////////////
+Submit del formulario
+en la etiqueta form siempre va el (ngSubmit)="guardar()"
+
+guardar(no me hace falta recibir nada){
+  if(this.miFormulario.invalid){
+    this.miFormulario.markAllasTouched();
+    return (para q corte aca )
+pero me gustaria q aparezcan los errores
+
+  }
+  this.miFormulario.reset()
+  console.log(miFormulario.value)
+}
+
+para empezar el formulario con algun valor conviene hacerlo con el ngOnInit implements OnInit
+ngOnInit()
+{
+  para establecer valor a los formularios
+  this.miFormulario.setValue({
+    nombre:'Rtx 4080ti',
+    precio:1600,
+    existencias:10
+  })
+}
+///
+para crear con arreglos
+
+,favoritos: this.fb.array([],Validators.required)
+
+span Valid
+
+pre miFor.valid
+
+value
+
+miform.value | json
+
+
+al Div de favoritos le pongo un atibuto formArrayName="favoritos"
+despues *ngFor="let favorito of favoritosArr.controls,let i = index"
+
+al input lo enlazo con el [formControlName]="i"
+
+
+Crear un getter
+get FavoritosArr(){
+  return this.miFormulario.get('favoritos') as FormArray;
+}
+
+//////////////////////////////
+Para q se agreguen elementos solos
+
+puedo hacer nuevoFavorito: FormControl = this.fb.control('valor inicial',Validators.required)
+
+y al elemento se le agrega el atributo
+[formControl]="nuevoFavorito"
+(keyup.enter)="" en el input
+creare metodo
+agregarFavorito ( ){
+  no me hace falta recibir arguemtnso xq la ifnromacion del campo la tengo en el nuevoFavorito
+  if (this.nuevoFavorito.invalid){
+    return
+  }
+  this.favoritosArr.push(new FormControl(this.nuevoFavorito.value,Validators.required))
+  this.nuevoFavorito.reset
+}
+
+span Agregar Juego
+pre nuevoFavorito.valid
+////////////////////////////////////////////////////////////
+
+Switch forms
+miFormulario: FormGroup = this.fb.group({
+  genero: ['M', Validators.required],
+  notificaciones:['m',Validaotrs.required]
+    condiciones:[ false,Validators.requiredTrue]
+
+})
+
+persona={
+  genero:'F',
+  notificaciones:true,
+  condiciones:[ false,Validators.required]
+}
+constructor(private fb : formBuilder){}
+
+agregar al form [formGroup]=miFormulario
+
+Cuando queremos crear un formulario siempre conviene hacerlo en el ngOnInit
+
+en el atributo se debe sacar el name
+y se debe poner el formControlName="genero"
+
+implements OnInit
+
+ngOnInit(){
+  this.miFormulario.reset({...this.persona,condiciones:false})
+}
